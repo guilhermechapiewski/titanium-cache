@@ -7,18 +7,23 @@ database to cache strings and JavaScript objects.
 More info at http://github.com/guilhermechapiewski/titanium-cache#readme
 
 Usage:
-	// returns null
+	// the following call will return null
 	Ti.Cache.get('my_data');
-	
-	// cache object for 5 minutes
-	// if you do not specify, the default cache time is 5 minutes
-	Ti.Cache.put('my_data', { property: 'value' });
-	
-	 // returns cached object
-	Ti.Cache.get('my_data');
-	
-	// cache another object for 1 hour
+
+	// now we'll cache object under "my_data" key for 5 minutes
+	// (if you do not specify, the default cache time is 5 minutes)
+	var my_javascript_object = { property: 'value' };
+	Ti.Cache.put('my_data', my_javascript_object);
+
+	// returns cached object
+	var cached_obj = Ti.Cache.get('my_data');
+
+	// cache another object (a xml document) for 1 hour
+	// (you can specify different cache expiration times then 5 minutes)
 	Ti.Cache.put('another_data', xml_document, 3600);
+
+	// the following call will delete an object from cache
+	Ti.Cache.del('my_data');
 ***************************************************/
 
 (function(){
