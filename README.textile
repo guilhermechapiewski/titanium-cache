@@ -12,27 +12,33 @@ Mobile applications usually perform requests over the Internet to get data from 
 
 h2. How to use in your projects
 
-Just copy the "cache.js":http://github.com/guilhermechapiewski/titanium-cache/blob/master/cache.js to your project and include it (only once) from your *app.js* file.
+Just copy the "cache.js":http://github.com/guilhermechapiewski/titanium-cache/blob/master/cache.js to your project and include it (only once) from your *app.js* file using:
 
-After that, the caching functions will be available under *Ti.Cache.**:
+<pre>Ti.include('cache.js');</pre>
 
-<pre>// the following call will return null
-Ti.Cache.get('my_data');
+After that, the caching functions will be available under *Ti.Cache.**, just like Titanium native functions.
 
-// now we'll cache object under "my_data" key for 5 minutes
-// (if you do not specify, the default cache time is 5 minutes)
+h3. 1. Get item from cache
+
+<pre>var cached_obj = Ti.Cache.get('my_data');</pre>
+
+h3. 2. Add item to cache
+
+You can cache strings or JavaScript native objects only. Images caching is not supported at this moment.
+
+<pre>// if you do not specify, the default cache time is 5 minutes
 var my_javascript_object = { property: 'value' };
-Ti.Cache.put('my_data', my_javascript_object);
+Ti.Cache.put('my_data', my_javascript_object);</pre>
 
-// returns cached object
-var cached_obj = Ti.Cache.get('my_data');
-
-// cache another object (a xml document) for 1 hour
+<pre>// cache another object (a xml document) for 1 hour
 // (you can specify different cache expiration times then 5 minutes)
-Ti.Cache.put('another_data', xml_document, 3600);
+Ti.Cache.put('another_data', xml_document, 3600);</pre>
 
-// the following call will delete an object from cache
-Ti.Cache.del('my_data');</pre>
+h3. 3. Delete item from cache
+
+<pre>Ti.Cache.del('my_data');</pre>
+
+h3. 4. Disabling cache for development
 
 If you need to disable cache (useful while you are developing the application), just go to "cache.js":http://github.com/guilhermechapiewski/titanium-cache/blob/master/cache.js file and change the *disable* variable value to *true*.
 
