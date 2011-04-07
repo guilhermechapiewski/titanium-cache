@@ -11,7 +11,7 @@ Usage:
 	Ti.Cache.get('my_data');
 	
 	// cache object for 5 minutes
-	// if you do not especify, the default cache time is 5 minutes
+	// if you do not specify, the default cache time is 5 minutes
 	Ti.Cache.put('my_data', { property: 'value' });
 	
 	 // returns cached object

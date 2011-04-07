@@ -1,0 +1,48 @@
+h1. titanium-cache
+
+*titanium-cache* provides caching for "Appcelerator's Titanium Mobile":http://www.appcelerator.com/products/titanium-mobile-application-development/ applications.
+
+h2. How it works
+
+"Titanium Mobile":http://www.appcelerator.com/products/titanium-mobile-application-development/ translates your hard won JavaScript skills into native applications that perform and look just like they were written in Objective-C (iPhone and iPad) or Java (Android).
+
+Mobile applications usually perform requests over the Internet to get data from APIs, and they can get very slow depending on the number of API calls you need to make.
+
+*titanium-cache* provides caching capabilities for "Titanium Mobile":http://www.appcelerator.com/products/titanium-mobile-application-development/ applications using SQLite local storage, so you can improve the performance of your mobile applications.
+
+h2. How to use in your projects
+
+Just copy the "cache.js":http://github.com/guilhermechapiewski/titanium-cache/blob/master/cache.js to your project and include it (only once) from your *app.js* file.
+
+After that, the caching functions will be available under *Ti.Cache.**:
+
+<pre>// will return null
+Ti.Cache.get('my_data');
+
+// cache object under "my_data" key for 5 minutes
+// if you do not specify, the default cache time is 5 minutes
+var my_javascript_object = { property: 'value' };
+Ti.Cache.put('my_data', my_javascript_object);
+
+// returns cached object
+var cached_obj = Ti.Cache.get('my_data');
+
+// cache another object (a xml document) for 1 hour
+// (you can specify different cache expiration times then 5 minutes)
+Ti.Cache.put('another_data', xml_document, 3600);</pre>
+
+If you need to disable cache (useful while you are developing the application), just go to "cache.js":http://github.com/guilhermechapiewski/titanium-cache/blob/master/cache.js file and change the *disable* variable value to *true*.
+
+h2. How to run the tests
+
+*titanium-cache* tests are located in the "cache_tests.js":http://github.com/guilhermechapiewski/titanium-cache/blob/master/cache_tests.js file.
+
+These tests are written in "Jasmine":http://pivotal.github.com/jasmine/ using "titanium-jasmine":http://github.com/guilhermechapiewski/titanium-jasmine#readme as the test runner.
+
+For more info on how to run these tests in your application, please refer to "titanium-jasmine documentation on GitHub":http://github.com/guilhermechapiewski/titanium-jasmine#readme.
+
+h2. More info
+
+If you want to see how I use *titanium-cache* on a real production project, please take a look at "Yahoo! Meme's source code on GitHub":http://github.com/acarlos1000/MemeiPhone.
+
+If you have any other questions, please contact me through "Twitter":http://twitter.com/gchapiewski or "e-mail":http://guilherme.it.
