@@ -26,13 +26,19 @@ Usage:
 	Ti.Cache.del('my_data');
 ***************************************************/
 
-var DELETE_ON_GET = true;
-
 (function(){
 	
-	var config = {
-		disable: false,
-		cache_expiration_interval: 60
+	var CONFIG = {
+		// Disables cache (useful during development).
+		DISABLE: false,
+		
+		// Time to check for objects that will be expired.
+		// Will check each CACHE_EXPIRATION_INTERVAL seconds.
+		CACHE_EXPIRATION_INTERVAL: 60,
+		
+		// This will avoid the cache expiration task to be set up
+		// and will expire objects from cache before get.
+		EXPIRE_ON_GET: false
 	};
 	
 	Ti.Cache = function() {
@@ -43,10 +49,13 @@ var DELETE_ON_GET = true;
 			var db = Titanium.Database.open('cache');
 			db.execute('CREATE TABLE IF NOT EXISTS cache (key TEXT UNIQUE, value TEXT, expiration INTEGER)');
 			db.close();
-			Ti.API.info('CACHE INITIALIZED (expiring objects each ' + cache_expiration_interval + ' seconds)');
-
-			// set cache expiration task
-			setInterval(expire_cache, cache_expiration_interval * 1000);
+			Ti.API.info('[CACHE] INITIALIZED');
+			
+			if (!CONFIG || (CONFIG && !CONFIG.EXPIRE_ON_GET)) {
+				// set cache expiration task
+				setInterval(expire_cache, cache_expiration_interval * 1000);
+				Ti.API.info('[CACHE] Will expire objects each ' + cache_expiration_interval + ' seconds');
+			}
 		};
 
 		expire_cache = function() {
@@ -66,32 +75,34 @@ var DELETE_ON_GET = true;
 			db.execute('DELETE FROM cache WHERE expiration <= ?', timestamp);
 			db.close();
 
-			Ti.API.debug('CACHE EXPIRATION: [' + count + '] object(s) expired');
+			Ti.API.debug('[CACHE] EXPIRATION: [' + count + '] object(s) expired');
 		};
 
 		current_timestamp = function() {
 			var value = Math.floor(new Date().getTime() / 1000);
-			Ti.API.debug("CACHE current_timestamp = "+value);
+			Ti.API.debug("[CACHE] current_timestamp=" + value);
 			return value;
 		};
 
 		get = function(key) {
 			var db = Titanium.Database.open('cache');
-			if (DELETE_ON_GET) {
-				Ti.API.debug("CACHE DELETE_ON_GET");
-				db.execute('CREATE TABLE IF NOT EXISTS cache (key TEXT UNIQUE, value TEXT, expiration INTEGER)');
-				db.execute('DELETE FROM cache WHERE expiration <= ?', current_timestamp());
+			
+			if (CONFIG && CONFIG.EXPIRE_ON_GET) {
+				Ti.API.debug('[CACHE] EXPIRE_ON_GET is set to "true"');
+				expire_cache();
 			}
+			
 			var rs = db.execute('SELECT value FROM cache WHERE key = ?', key);
 			var result = null;
 			if (rs.isValidRow()) {
-				Ti.API.info('CACHE HIT! key[' + key + ']');
+				Ti.API.info('[CACHE] HIT, key[' + key + ']');
 				result = JSON.parse(rs.fieldByName('value'));
 			} else {
-				Ti.API.info('CACHE MISS key[' + key + ']');				
+				Ti.API.info('[CACHE] MISS, key[' + key + ']');				
 			}
 			rs.close();
 			db.close();
+			
 			return result;
 		};
 
@@ -101,7 +112,7 @@ var DELETE_ON_GET = true;
 			}
 			var expires_in = current_timestamp() + expiration_seconds;
 			var db = Titanium.Database.open('cache');
-			Ti.API.info('CACHE PUT: current = '+current_timestamp()+' expires_in = '+expires_in);
+			Ti.API.info('[CACHE] PUT: time=' + current_timestamp() + ', expires_in=' + expires_in);
 			var query = 'INSERT OR REPLACE INTO cache (key, value, expiration) VALUES (?, ?, ?);';
 			db.execute(query, key, JSON.stringify(value), expires_in);
 			db.close();
@@ -111,11 +122,12 @@ var DELETE_ON_GET = true;
 			var db = Titanium.Database.open('cache');
 			db.execute('DELETE FROM cache WHERE key = ?', key);
 			db.close();
+			Ti.API.info('[CACHE] DELETED key[' + key + ']');
 		};
 
-		return function(options) {
+		return function() {
 			// if development environment, disable cache capabilities
-			if (options && options.disable) {
+			if (CONFIG && CONFIG.DISABLE) {
 				return {
 					get: function(){},
 					put: function(){},
@@ -125,21 +137,19 @@ var DELETE_ON_GET = true;
 
 			// initialize everything
 			var cache_expiration_interval = 30;
-			if (options && options.cache_expiration_interval) {
-				cache_expiration_interval = options.cache_expiration_interval;
+			if (CONFIG && CONFIG.CACHE_EXPIRATION_INTERVAL) {
+				cache_expiration_interval = CONFIG.CACHE_EXPIRATION_INTERVAL;
 			}
 
-			if (! DELETE_ON_GET) {
-				init_cache(cache_expiration_interval);
-			}
+			init_cache(cache_expiration_interval);
 
 			return {
 				get: get,
 				put: put,
 				del: del
 			};
-		}(config);
+		}();
 		
-	}();
+	}(CONFIG);
 	
 })();
