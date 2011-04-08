@@ -79,6 +79,7 @@ var DELETE_ON_GET = true;
 			var db = Titanium.Database.open('cache');
 			if (DELETE_ON_GET) {
 				Ti.API.debug("CACHE DELETE_ON_GET");
+				db.execute('CREATE TABLE IF NOT EXISTS cache (key TEXT UNIQUE, value TEXT, expiration INTEGER)');
 				db.execute('DELETE FROM cache WHERE expiration <= ?', current_timestamp());
 			}
 			var rs = db.execute('SELECT value FROM cache WHERE key = ?', key);
