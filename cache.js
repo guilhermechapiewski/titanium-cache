@@ -26,6 +26,8 @@ Usage:
 	Ti.Cache.del('my_data');
 ***************************************************/
 
+var DELETE_ON_GET = true;
+
 (function(){
 	
 	var config = {
@@ -68,16 +70,24 @@ Usage:
 		};
 
 		current_timestamp = function() {
-			return new Date().getTime();
+			var value = Math.floor(new Date().getTime() / 1000);
+			Ti.API.debug("CACHE current_timestamp = "+value);
+			return value;
 		};
 
 		get = function(key) {
 			var db = Titanium.Database.open('cache');
+			if (DELETE_ON_GET) {
+				Ti.API.debug("CACHE DELETE_ON_GET");
+				db.execute('DELETE FROM cache WHERE expiration <= ?', current_timestamp());
+			}
 			var rs = db.execute('SELECT value FROM cache WHERE key = ?', key);
 			var result = null;
 			if (rs.isValidRow()) {
-				Ti.API.info('CACHE HIT! key[' + key + '], value[' + rs.fieldByName('value') + ']');
+				Ti.API.info('CACHE HIT! key[' + key + ']');
 				result = JSON.parse(rs.fieldByName('value'));
+			} else {
+				Ti.API.info('CACHE MISS key[' + key + ']');				
 			}
 			rs.close();
 			db.close();
@@ -90,6 +100,7 @@ Usage:
 			}
 			var expires_in = current_timestamp() + expiration_seconds;
 			var db = Titanium.Database.open('cache');
+			Ti.API.info('CACHE PUT: current = '+current_timestamp()+' expires_in = '+expires_in);
 			var query = 'INSERT OR REPLACE INTO cache (key, value, expiration) VALUES (?, ?, ?);';
 			db.execute(query, key, JSON.stringify(value), expires_in);
 			db.close();
@@ -117,7 +128,9 @@ Usage:
 				cache_expiration_interval = options.cache_expiration_interval;
 			}
 
-			init_cache(cache_expiration_interval);
+			if (! DELETE_ON_GET) {
+				init_cache(cache_expiration_interval);
+			}
 
 			return {
 				get: get,
