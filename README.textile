@@ -40,7 +40,7 @@ h3. 3. Delete item from cache
 
 h3. 4. Disabling cache for development
 
-If you need to disable cache (useful while you are developing the application), just go to "cache.js":http://github.com/guilhermechapiewski/titanium-cache/blob/master/cache.js file and change the *disable* variable value to *true*.
+If you need to disable cache (useful while you are developing the application), just go to "cache.js":http://github.com/guilhermechapiewski/titanium-cache/blob/master/cache.js file and change the *DISABLE* variable value to *true*.
 
 h2. How to run the tests
 
@@ -55,3 +55,9 @@ h2. More info
 If you want to see how I use *titanium-cache* on a real production project, please take a look at "Yahoo! Meme's source code on GitHub":http://github.com/acarlos1000/MemeiPhone.
 
 If you have any other questions, please contact me through "Twitter":http://twitter.com/gchapiewski or "e-mail":http://guilherme.it.
+
+h2. License
+
+*titanium-cache* is licensed under *Apache Public License (Version 2)*. See "LICENSE":http://github.com/guilhermechapiewski/titanium-cache/blob/master/LICENSE for more details.
+
+Developed by "Guilherme Chapiewski":http://github.com/dogweather with contributions from "Robb Shecter":http://github.com/dogweather.
