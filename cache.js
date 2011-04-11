@@ -8,22 +8,22 @@ More info at http://github.com/guilhermechapiewski/titanium-cache#readme
 
 Usage:
 	// the following call will return null
-	Ti.Cache.get('my_data');
+	Ti.App.Cache.get('my_data');
 
 	// now we'll cache object under "my_data" key for 5 minutes
 	// (if you do not specify, the default cache time is 5 minutes)
 	var my_javascript_object = { property: 'value' };
-	Ti.Cache.put('my_data', my_javascript_object);
+	Ti.App.Cache.put('my_data', my_javascript_object);
 
 	// returns cached object
-	var cached_obj = Ti.Cache.get('my_data');
+	var cached_obj = Ti.App.Cache.get('my_data');
 
 	// cache another object (a xml document) for 1 hour
 	// (you can specify different cache expiration times then 5 minutes)
-	Ti.Cache.put('another_data', xml_document, 3600);
+	Ti.App.Cache.put('another_data', xml_document, 3600);
 
 	// the following call will delete an object from cache
-	Ti.Cache.del('my_data');
+	Ti.App.Cache.del('my_data');
 ***************************************************/
 
 (function(){
@@ -41,7 +41,7 @@ Usage:
 		EXPIRE_ON_GET: false
 	};
 	
-	Ti.Cache = function() {
+	Ti.App.Cache = function() {
 		var init_cache, expire_cache, current_timestamp, get, put, del;
 
 		// Cache initialization

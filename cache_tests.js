@@ -1,6 +1,6 @@
 (function(){
 	
-	var cache = Ti.Cache;
+	var cache = Ti.App.Cache;
 
 	describe('cache', function() {
 		
