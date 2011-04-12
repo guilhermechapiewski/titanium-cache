@@ -60,4 +60,4 @@ h2. License
 
 *titanium-cache* is licensed under *Apache Public License (Version 2)*. See "LICENSE":http://github.com/guilhermechapiewski/titanium-cache/blob/master/LICENSE for more details.
 
-Developed by "Guilherme Chapiewski":http://github.com/dogweather with contributions from "Robb Shecter":http://github.com/dogweather.
+Developed by "Guilherme Chapiewski":http://guilherme.it with contributions from "Robb Shecter":http://www.weblaws.org/robb/.
