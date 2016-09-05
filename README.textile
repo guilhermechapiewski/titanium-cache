@@ -1,3 +1,5 @@
+h2. Note: This library hasn't been updated for years. If you want to cache XHR requests I recommend using XHR.js: https://github.com/raulriera/XHR
+
 h1. titanium-cache
 
 *titanium-cache* provides caching for "Appcelerator's Titanium Mobile":http://www.appcelerator.com/products/titanium-mobile-application-development/ applications.
