@@ -46,7 +46,7 @@ h2. How to run the tests
 
 *titanium-cache* tests are located in the "cache_tests.js":http://github.com/guilhermechapiewski/titanium-cache/blob/master/cache_tests.js file.
 
-These tests are written in "Jasmine":http://pivotal.github.com/jasmine/ using "titanium-jasmine":http://github.com/guilhermechapiewski/titanium-jasmine#readme as the test runner.
+These tests are written in "Jasmine":https://jasmine.github.io/ using "titanium-jasmine":http://github.com/guilhermechapiewski/titanium-jasmine#readme as the test runner.
 
 For more info on how to run these tests in your application, please refer to "titanium-jasmine documentation on GitHub":http://github.com/guilhermechapiewski/titanium-jasmine#readme.
 
